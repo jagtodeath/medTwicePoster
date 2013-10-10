@@ -6,7 +6,7 @@ from wordpress_xmlrpc.methods import taxonomies
 from wordpress_xmlrpc.methods.posts import GetPosts, NewPost, EditPost
 from wordpress_xmlrpc.methods.users import GetUserInfo
 
-youtube = False
+youtube = True
 
 """
 Quick script I wrote to post a bunch of pregnancy by week videos.
@@ -56,7 +56,8 @@ if youtube:
 
 	def updateTitles():
 		for i in range(4,42):
-			title = 'Pregnancy by Week - Week ' + str(i)
+			print entries[i-4].media.title.text
+			title = 'Pregnancy by Weeks - Week ' + str(i)
 			entries[i-4].media.title.text = title
 			print title
 			yt_service.UpdateVideoEntry(entries[i-4])
@@ -64,7 +65,7 @@ if youtube:
 	def updateDescriptions():
 		for i in range(4,42):
 			description = 'For more information and related videos: \
-	http://medtwice.com/pregnancy-by-week-week-'+str(i)
+http://medtwice.com/pregnancy-by-weeks-week-'+str(i)
 			print description
 			entries[i-4].media.description.text = description
 			yt_service.UpdateVideoEntry(entries[i-4])
@@ -100,13 +101,14 @@ height="360" width="640" allowfullscreen="" frameborder="0"></iframe>"""
 # wordPressPost()
 def updatePosts():
 	posts = wp.call(GetPosts({'number':38}))
-
 	i = 3
 	for post in posts:
 		i += 1
-		post.slug = 'pregnancy-by-week-week-' + str(i)
+		post.slug = 'pregnancy-by-weeks-week-' + str(i)
+		post.title = 'Pregnancy By Weeks - Week ' + str(i)
 		wp.call(EditPost(post.id, post))
 		print post.slug
+
 
 
 
